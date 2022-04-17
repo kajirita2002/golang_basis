@@ -1,0 +1,61 @@
+name: go-ci
+
+on:
+  push:
+    branch:
+      - main
+      - develop
+
+jobs:
+  # 共通処理
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: set-up
+        uses: actions/setup-go@v3
+      - name: chckout
+        uses: actions/checkout@v3
+        with:
+          go-version: 1.17.x
+      - name: version check
+        run: go version
+
+      # 処理を高速化するために環境をキャッシュ
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+  # buildテスト
+  build:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: build
+        run: go build ./cmd/api/grpc
+
+  # testを通す
+  test:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: test
+        run: go test ./... -v
+
+  # lintを通す
+  lint:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: latest

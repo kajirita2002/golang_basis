@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package pb;
+option go_package="server/api/grpc/pb";
+
+message GetUserRequest {
+  int64 id = 1;
+}
+
+message GetUserResponse {
+  User user = 1;
+}
+
+service UserService {
+  rpc Get(GetUserRequest) returns (GetUserResponse) {}
+}
+
+message User {
+  int64 id = 1;
+}

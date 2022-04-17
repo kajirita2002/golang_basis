@@ -1,4 +1,6 @@
-### Go template
+# If you prefer the allow list template instead of the deny list, see community template:
+# https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore
+#
 # Binaries for programs and plugins
 *.exe
 *.exe~
@@ -15,11 +17,46 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
-### Example user template template
-### Example user template
-
-# IntelliJ project files
+# Editor
 .idea
-*.iml
-out
-gen
+/.project
+/.buildpath
+/.settings
+*~
+\#*\#
+*.bak
+
+# OS
+.DS_Store
+._*
+
+# toolchain
+/build/.toolchain/
+
+# Terraform
+*.tfstate
+*.tfstate.backup
+.terraform
+crash.log
+
+# Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
+.glide/
+
+# SSL
+*.crt
+*.key
+
+# binary
+bin/
+function/
+
+# secrets
+secret/
+.env
+
+# documents
+docs/*/swagger.*
+docs/*/*.go
+
+# mysql
+build/mysql/local/data
